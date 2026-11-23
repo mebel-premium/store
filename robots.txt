@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /tools/
+
+Sitemap: https://mebel-premium.github.io/store/sitemap.xml
