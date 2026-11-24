@@ -31,8 +31,10 @@ window.SITE = {
   phoneHref: "tel:+79280200790",
   whatsapp: "79280200790",
   telegram: "",
+  // MAX — ссылка на профиль (max.ru/u/…); пусто — без кнопки MAX
+  max: "https://max.ru/u/f9LHodD0cOL5UTKlFME_d7go6-GWEIul60t0yUkfkRMO-Q2q9sEDaZ5b0bc",
   // Дополнительные строки в окне «Связаться»: { title, text, url }. Пустой url — просто строка (адрес, режим работы)
-  socials: [{"title": "Макс", "text": "+7 928 020-07-90", "url": ""}],
+  socials: [],
   // <<< КОНТАКТЫ
 
   categories: [

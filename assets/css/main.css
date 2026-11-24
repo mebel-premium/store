@@ -718,6 +718,12 @@ html.has-cart .toast { bottom: calc(16px + var(--cart-h, 0px)); }
 .opt--more { text-decoration: none; color: var(--ink-2, inherit); opacity: .8; }
 /* У магазина нет Telegram — кнопки Telegram не показываем */
 .no-tg .icon-btn--tg, .no-tg .btn--tg { display: none !important; }
+/* MAX — фирменный сине-фиолетовый */
+.btn--max, .contact-row .ci--max { background: linear-gradient(135deg, #3B82FF, #8B4BFF); color: #fff; }
+.btn--max .icon, .icon-btn--max .icon, .ci--max .icon { width: 26px; height: 26px; }
+.topbar-actions .icon-btn--max { display: none; color: #fff; background: linear-gradient(135deg, #3B82FF, #8B4BFF); }
+@media (min-width: 600px) { .topbar-actions .icon-btn--max { display: inline-flex; } }
+.no-max .icon-btn--max, .no-max .btn--max { display: none !important; }
 
 /* ===== Оформление Mebel Premium (под логотип) ===== */
 :root {

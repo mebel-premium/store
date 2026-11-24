@@ -224,6 +224,8 @@
   var TG_HREF = tgHref("");
   // Нет Telegram — прячем все его кнопки
   document.documentElement.classList.toggle("no-tg", !SITE.telegram);
+  // MAX — только ссылка на профиль (текст заявки MAX подставить не умеет)
+  document.documentElement.classList.toggle("no-max", !SITE.max);
 
   function copy(text) {
     if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
@@ -339,6 +341,7 @@
     return '<a class="btn btn--wa" href="' + esc(waHref(message(p))) + '" target="_blank" rel="noopener" data-wa-item="' + p.id + '">' + icon("wa") + "<span>Узнать цену" + (wide ? '<span class="cta-more"> в WhatsApp</span>' : "") + "</span></a>" +
       (wide ? cartBtnHtml(p, true) : "") +
       '<a class="btn btn--tg btn--square" href="' + esc(tgHref(message(p))) + '" target="_blank" rel="noopener" data-tg-item="' + p.id + '" aria-label="Написать в Telegram">' + icon("tg") + "</a>" +
+      (SITE.max ? '<a class="btn btn--max btn--square" href="' + esc(SITE.max) + '" target="_blank" rel="noopener" aria-label="Написать в MAX">' + icon("max") + "</a>" : "") +
       '<a class="btn btn--line btn--square" href="' + SITE.phoneHref + '" aria-label="Позвонить">' + icon("phone") + "</a>";
   }
 
@@ -1002,6 +1005,8 @@
         "<span><b>WhatsApp</b><small>" + esc(SITE.phone) + '</small></span><img class="qr" src="assets/img/qr-whatsapp.jpg" alt="QR-код WhatsApp" loading="lazy"></a>' +
       (SITE.telegram ? '<a class="contact-row" href="' + TG_HREF + '" target="_blank" rel="noopener"><span class="ci ci--tg">' + icon("tg") + "</span>" +
         "<span><b>Telegram</b><small>@" + esc(SITE.telegram) + '</small></span><img class="qr" src="assets/img/qr-telegram.jpg" alt="QR-код Telegram" loading="lazy"></a>' : "") +
+      (SITE.max ? '<a class="contact-row" href="' + esc(SITE.max) + '" target="_blank" rel="noopener"><span class="ci ci--max">' + icon("max") + "</span>" +
+        "<span><b>MAX</b><small>Написать в MAX</small></span></a>" : "") +
       '<a class="contact-row" href="' + SITE.phoneHref + '"><span class="ci ci--call">' + icon("phone") + "</span>" +
         "<span><b>Позвонить</b><small>" + esc(SITE.phone) + "</small></span></a>" +
       (SITE.socials || []).map(function (s) {
@@ -1014,6 +1019,7 @@
     $$("[data-contact-list]").forEach(function (el) { el.innerHTML = html; });
     $$("[data-wa]").forEach(function (a) { a.href = genericWa; });
     $$("[data-tg]").forEach(function (a) { a.href = TG_HREF; });
+    $$("[data-max]").forEach(function (a) { if (SITE.max) a.href = SITE.max; });
     $$("[data-phone]").forEach(function (a) { a.href = SITE.phoneHref; a.textContent = SITE.phone; });
     $("#year").textContent = new Date().getFullYear();
   }

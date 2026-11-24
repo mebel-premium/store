@@ -665,7 +665,7 @@
     var cur = sandbox.SITE;
     CT = { repo: repo, text: text, cur: cur };
     var f = $("#contactsForm");
-    f.phone.value = cur.phone || ""; f.whatsapp.value = cur.whatsapp || ""; f.telegram.value = cur.telegram || "";
+    f.phone.value = cur.phone || ""; f.whatsapp.value = cur.whatsapp || ""; f.telegram.value = cur.telegram || ""; f.max.value = cur.max || "";
     $("#cSocials").innerHTML = "";
     (cur.socials || []).forEach(function (s) { $("#cSocials").appendChild(socialRow(s)); });
     $("#contactsError").hidden = true;
@@ -681,6 +681,8 @@
     if (digits.length === 11 && digits[0] === "8") digits = "7" + digits.slice(1);
     if (digits.length < 10) throw new Error("Проверьте телефон — в нём меньше 10 цифр.");
     if (wa.length < 10 || wa.length > 15) throw new Error("WhatsApp: нужен номер с кодом страны, 10–15 цифр, например 79991443200.");
+    var max = f.max.value.trim();
+    if (max && !/^https:\/\/max\.ru\/\S+$/.test(max)) throw new Error("MAX: вставьте ссылку на профиль вида https://max.ru/u/… (в приложении: профиль → Поделиться).");
     if (tg && !/^[A-Za-z0-9_]{5,32}$/.test(tg)) throw new Error("Telegram: имя пользователя — латиница, цифры и «_», от 5 символов (без @).");
     var socials = $$("#cSocials .social").map(function (row) {
       return { title: row.querySelector('[name="title"]').value.trim(), text: row.querySelector('[name="text"]').value.trim(), url: row.querySelector('[name="url"]').value.trim() };
@@ -689,7 +691,7 @@
       if (!s.title) throw new Error("У каждой строки должно быть название (например, MAX или Адрес).");
       if (s.url && !/^(https?:\/\/|tel:|mailto:|tg:)/.test(s.url)) throw new Error("Ссылка «" + s.title + "» должна начинаться с https://");
     });
-    return { phone: phone, phoneHref: "tel:+" + digits, whatsapp: wa, telegram: tg, socials: socials };
+    return { phone: phone, phoneHref: "tel:+" + digits, whatsapp: wa, telegram: tg, max: max, socials: socials };
   }
   function contactsBlock(v) {
     return "  // >>> КОНТАКТЫ — меняются в админке (меню → «Контакты»)\n" +
@@ -697,6 +699,8 @@
       "  phoneHref: " + JSON.stringify(v.phoneHref) + ",\n" +
       "  whatsapp: " + JSON.stringify(v.whatsapp) + ",\n" +
       "  telegram: " + JSON.stringify(v.telegram) + ",\n" +
+      "  // MAX — ссылка на профиль (max.ru/u/…); пусто — без кнопки MAX\n" +
+      "  max: " + JSON.stringify(v.max || "") + ",\n" +
       "  // Дополнительные строки в окне «Связаться»: { title, text, url }. Пустой url — просто строка (адрес, режим работы)\n" +
       "  socials: " + (v.socials.length ? "[\n" + v.socials.map(function (s) { return "    " + JSON.stringify(s) + ","; }).join("\n") + "\n  ]" : "[]") + ",\n" +
       "  // <<< КОНТАКТЫ\n";
@@ -725,6 +729,7 @@
     if (v.phone !== cur.phone) changes.push("Телефон: " + cur.phone + " → " + v.phone);
     if (v.whatsapp !== cur.whatsapp) changes.push("WhatsApp: +" + cur.whatsapp + " → +" + v.whatsapp);
     if (v.telegram !== cur.telegram) changes.push("Telegram: " + (cur.telegram ? "@" + cur.telegram : "нет") + " → " + (v.telegram ? "@" + v.telegram : "нет"));
+    if (v.max !== (cur.max || "")) changes.push("MAX: " + (cur.max ? "ссылка" : "нет") + " → " + (v.max ? v.max : "нет"));
     if (JSON.stringify(v.socials) !== JSON.stringify(cur.socials || [])) changes.push("Другие строки: " + (v.socials.map(function (s) { return s.title; }).join(", ") || "нет"));
     if (!changes.length) { toast("Ничего не изменилось."); return; }
     if (!confirm("Вы точно хотите изменить контакты на сайте?\n\n" + changes.join("\n"))) return;
