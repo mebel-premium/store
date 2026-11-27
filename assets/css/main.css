@@ -774,3 +774,11 @@ html.has-cart .toast { bottom: calc(16px + var(--cart-h, 0px)); }
 .brand-name small { letter-spacing: .34em; color: var(--accent); }
 .home-title, .home-h2, .card-title, .detail-title, .hero-title { font-family: var(--font-display); letter-spacing: 0; }
 .btn--dark, .chip.is-on, .cat-tab.is-active { font-weight: 700; }
+
+/* Стулья — палитра и типографика Mebel Premium, полный кадр. */
+.car--chairs .car-track { aspect-ratio: 3 / 4; }
+.car--chairs .car-slide img { object-fit: contain; }
+.card:has(.car--chairs) { border-color: var(--line-strong); }
+.car--chairs .tag--num { background: var(--accent); color: var(--accent-ink); }
+.related-group + .related-group { margin-top: 16px; }
+.related[href^="chairs/"] img, .home-cat[href="chairs/"] img { object-fit: contain; }
